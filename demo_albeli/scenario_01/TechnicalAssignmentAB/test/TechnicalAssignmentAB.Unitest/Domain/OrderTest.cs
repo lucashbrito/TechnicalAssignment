@@ -28,5 +28,27 @@ namespace TechnicalAssignmentAB.Unitest.Domain
 
             Assert.Equal(expectedMessage, exception.Message);
         }
+
+        [Fact]
+        public void Add_new_order_item()
+        {
+            var customerId = 10;
+            decimal price = 100;
+
+            var productId = 10;
+            var productName = "teste";
+            var unit = 1;
+
+            Order newOrder = new Order(customerId, price);
+
+            OrderItem orderItem = new OrderItem(productId, productName, unit);
+
+            newOrder.AddOrdemItem(orderItem);
+
+            Assert.Collection(newOrder.OrderItems, _ => 
+            {
+                
+            });
+        }
     }
 }

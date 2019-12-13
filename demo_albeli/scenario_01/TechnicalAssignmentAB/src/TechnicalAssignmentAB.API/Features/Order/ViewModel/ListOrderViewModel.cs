@@ -16,8 +16,13 @@ namespace TechnicalAssignmentAB.API.Features.Order.ViewModel
         {
             this.CustomerId = customerId;
 
-            foreach (var order in orders)
-                this.OrdersViewModel.Add(new OrderViewModel(order.Id, order.Price, order.CreatedAt));
+            foreach (var item in orders)
+            {
+                var order = new OrderViewModel(item.Id, item.Price, item.CreatedAt);
+                order.SetOrderItemViewModelList(item.OrderItems);
+                this.OrdersViewModel.Add(order);
+            }
+
         }
     }
 }

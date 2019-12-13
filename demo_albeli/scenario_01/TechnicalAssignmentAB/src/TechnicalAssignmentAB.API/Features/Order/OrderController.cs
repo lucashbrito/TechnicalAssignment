@@ -24,6 +24,10 @@ namespace TechnicalAssignmentAB.API.Features.Order
 
             OrderModel newOrder = new OrderModel(viewModel.CustomerId, viewModel.Price);
 
+            var orderItem = new OrderItemViewModel(viewModel.OrderItemViewModels);
+
+            newOrder.AddOrdemItemId(orderItem.OrderItems);
+
             await _orderRepository.CreateNewOrder(newOrder);
 
             return Ok("Order has been created successfuly");
