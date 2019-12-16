@@ -10,23 +10,23 @@ namespace TechnicalAssignmentAB.API.Features.Order.ViewModel
         public decimal Price { get; }
         public DateTime CreatedAt { get; }
 
-        public IEnumerable<OrderItemViewModel> OrderItemViewModels { get; }
+        public List<OrderItemViewModel> OrderItemViewModels { get; }
 
         public OrderViewModel(long orderId, decimal price, DateTime createdAt)
         {
             OrderId = orderId;
             Price = price;
-            CreatedAt = createdAt;           
+            CreatedAt = createdAt;
         }
 
-        public void SetOrderItemViewModelList(IList<OrderItem> orderItem)
+        public void SetOrderItemViewModelList(IReadOnlyCollection<OrderItem> orderItems)
         {
-            if (orderItem != null || orderItem.Count > 0)
+            if (orderItems != null || orderItems.Count > 0)
             {
-                foreach (var ordemItemViewModel in orderItem)
+                foreach (var orderItem in orderItems)
                 {
-                    var orderItem = new OrderItemViewModel(ordemItemViewModel.ProductId, ordemItemViewModel.ProductName, ordemItemViewModel.Units);
-                    OrderItems.Add(orderItem);
+                    var orderItemViewModel = OrderItemViewModel.CreateOrderItemViewModel(orderItem.ProductId, orderItem.ProductName, orderItem.Units);
+                    OrderItemViewModels.Add(orderItemViewModel);
                 }
             }
         }

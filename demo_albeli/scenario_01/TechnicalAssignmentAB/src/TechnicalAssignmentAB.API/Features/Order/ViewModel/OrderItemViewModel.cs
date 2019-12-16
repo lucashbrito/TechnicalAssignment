@@ -5,19 +5,29 @@ namespace TechnicalAssignmentAB.API.Features.Order.ViewModel
 {
     public class OrderItemViewModel
     {
-        public int Units { get; set; }
-        public string ProductName { get; set; }
-        public int ProductId { get; set; }
+        public int Units { get; private set; }
+        public string ProductName { get; private set; }
+        public int ProductId { get; private set; }
 
-        public IList<OrderItem> OrderItems { get; private set; }
+        private static List<OrderItem> OrderItems = new List<OrderItem>();
 
-        public OrderItemViewModel(IList<OrderItemViewModel> ordemItemViewModels)
+        private OrderItemViewModel()
         {
-            OrderItems = new List<OrderItem>();
-            GetOrderItemList(ordemItemViewModels);
         }
 
-        private void GetOrderItemList(IList<OrderItemViewModel> ordemItemViewModels)
+        private OrderItemViewModel(int productId, string productName, int units)
+        {
+            ProductId = productId;
+            ProductName = productName;
+            Units = units;
+        }
+
+        internal static OrderItemViewModel CreateOrderItemViewModel(int productId, string productName, int units)
+        {
+            return new OrderItemViewModel(productId, productName, units);
+        }
+
+        private static void GetOrderItemList(IList<OrderItemViewModel> ordemItemViewModels)
         {
             if (ordemItemViewModels != null || ordemItemViewModels.Count > 0)
             {
@@ -27,6 +37,18 @@ namespace TechnicalAssignmentAB.API.Features.Order.ViewModel
                     OrderItems.Add(orderItem);
                 }
             }
+        }
+
+        internal static Domain.Model._0rderAggregate.Order AddOrderItemToOrdem(Domain.Model._0rderAggregate.Order newOrder, IList<OrderItemViewModel> orderItemViewModels)
+        {
+            GetOrderItemList(orderItemViewModels);
+
+            foreach (var item in OrderItems)
+            {
+                newOrder.AddOrdemItem(item);
+            }
+
+            return newOrder;
         }
     }
 }

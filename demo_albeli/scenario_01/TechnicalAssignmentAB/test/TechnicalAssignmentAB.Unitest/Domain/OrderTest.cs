@@ -39,16 +39,24 @@ namespace TechnicalAssignmentAB.Unitest.Domain
             var productName = "teste";
             var unit = 1;
 
-            Order newOrder = new Order(customerId, price);
+            var newOrder = new Order(customerId, price);
 
-            OrderItem orderItem = new OrderItem(productId, productName, unit);
+            var orderItem = new OrderItem(productId, productName, unit);
 
             newOrder.AddOrdemItem(orderItem);
 
-            Assert.Collection(newOrder.OrderItems, _ => 
-            {
-                
-            });
+            Assert.NotNull(newOrder.OrderItems);
+        }
+
+        [Theory]
+        [InlineData(0, "Renata", 3, "productId can't be 0 or negative!")]
+        [InlineData(1, "", 2, "productName can't be null or empty!")]
+        [InlineData(1, "Cicero", -1, "units can't be 0 or negative!")]
+        public void Create_new_order_item_failure(int productId, string productName, int unit, string expectedMessage)
+        {
+            var exception = Assert.Throws<ArgumentException>(() => new OrderItem(productId, productName, unit));
+
+            Assert.Equal(expectedMessage, exception.Message);
         }
     }
 }
