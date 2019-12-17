@@ -41,5 +41,12 @@ namespace TechnicalAssignmentAB.Domain.Model._0rderAggregate
 
             _orderItems.Add(orderItem);
         }
+        public void RemoveOrdemItem(OrderItem orderItem)
+        {
+            if (orderItem == null)
+                throw new ArgumentException("");
+
+            _orderItems.Remove(orderItem);
+        }
     }
 }

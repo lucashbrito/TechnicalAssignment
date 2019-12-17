@@ -48,10 +48,30 @@ namespace TechnicalAssignmentAB.Unitest.Domain
             Assert.NotNull(newOrder.OrderItems);
         }
 
+        [Fact]
+        public void Remove_order_item()
+        {
+            var customerId = 10;
+            decimal price = 100;
+
+            var productId = 10;
+            var productName = "teste";
+            var unit = 1;
+
+            var newOrder = new Order(customerId, price);
+            var orderItem = new OrderItem(productId, productName, unit);
+
+            newOrder.AddOrdemItem(orderItem);
+
+            newOrder.RemoveOrdemItem(orderItem);
+
+            Assert.False(newOrder.OrderItems.Count > 0);
+        }
+
         [Theory]
-        [InlineData(0, "Renata", 3, "productId can't be 0 or negative!")]
+        [InlineData(0, "maria", 3, "productId can't be 0 or negative!")]
         [InlineData(1, "", 2, "productName can't be null or empty!")]
-        [InlineData(1, "Cicero", -1, "units can't be 0 or negative!")]
+        [InlineData(1, "joao", -1, "units can't be 0 or negative!")]
         public void Create_new_order_item_failure(int productId, string productName, int unit, string expectedMessage)
         {
             var exception = Assert.Throws<ArgumentException>(() => new OrderItem(productId, productName, unit));
