@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using TechnicalAssignmentAB.API.Features.Customer.ViewModel;
 using TechnicalAssignmentAB.Domain;
-using TechnicalAssignmentAB.Domain.Model.CustomerAggregate;
 
 namespace TechnicalAssignmentAB.API.Features.Customer
 {
-
     using  CustomerModel = Domain.Model.CustomerAggregate.Customer;
 
     [Route("api/v1/[controller]")]
@@ -25,9 +23,7 @@ namespace TechnicalAssignmentAB.API.Features.Customer
             if (customers.Count <= 0)
                 return NotFound("No register was found");
 
-            var customerViewModel = new ListCustomerViewModel(customers);
-
-            return Ok(customerViewModel);
+            return Ok(new ListCustomerViewModel(customers));
         }
 
         [HttpPost("Register")]
@@ -36,7 +32,7 @@ namespace TechnicalAssignmentAB.API.Features.Customer
             if (!TryValidateModel(viewModel))
                 return BadRequest("Invalid Parameters");
 
-            CustomerModel customerModel = CustomerModel.Factory.Create(viewModel.Name, viewModel.Email);
+            var customerModel = CustomerModel.Factory.Create(viewModel.Name, viewModel.Email);
 
             await _customerRepository.RegisterNewCustomer(customerModel);
 

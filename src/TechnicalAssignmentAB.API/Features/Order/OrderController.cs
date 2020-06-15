@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TechnicalAssignmentAB.API.Features.Order.ViewModel;
 using TechnicalAssignmentAB.Domain;
-using TechnicalAssignmentAB.Domain.Model._0rderAggregate;
 
 namespace TechnicalAssignmentAB.API.Features.Order
 {
@@ -24,7 +23,7 @@ namespace TechnicalAssignmentAB.API.Features.Order
             if (!TryValidateModel(viewModel))
                 return BadRequest("Invalid Parameters");
 
-            OrderModel newOrder = new OrderModel(viewModel.CustomerId, viewModel.Price);
+            var newOrder = new OrderModel(viewModel.CustomerId, viewModel.Price);
 
             newOrder = OrderItemViewModel.AddOrderItemToOrdem(newOrder, viewModel.OrderItemViewModels);
 
@@ -41,9 +40,7 @@ namespace TechnicalAssignmentAB.API.Features.Order
             if (customerOrders.Count <= 0)
                 return NotFound("No order has found");
 
-            var viewModel = new ListOrderViewModel(customerId, customerOrders);
-
-            return Ok(viewModel);
+            return Ok(new ListOrderViewModel(customerId, customerOrders));
         }
     }
 }

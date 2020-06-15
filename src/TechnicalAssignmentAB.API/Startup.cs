@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TechnicalAssignmentAB.Persistence;
@@ -21,7 +20,7 @@ namespace TechnicalAssignmentAB.API
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc();
 
             services.AddInfrastructureAb(Configuration);
 
@@ -30,9 +29,31 @@ namespace TechnicalAssignmentAB.API
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvc(route => route.MapRoute("default", "{controller=Customer}/{action=Get}/{id?}"));
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
 
             app.Run(async (context) => await context.Response.WriteAsync("Hello World!"));
         }
