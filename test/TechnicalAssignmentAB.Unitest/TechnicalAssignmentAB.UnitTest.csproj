@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Repositories\**" />
+    <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="Repositories\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TechnicalAssignmentAB.API\TechnicalAssignmentAB.API.csproj" />
+    <ProjectReference Include="..\..\src\TechnicalAssignmentAB.Domain\TechnicalAssignmentAB.Domain.csproj" />
+    <ProjectReference Include="..\..\src\TechnicalAssignmentAB.Persistence\TechnicalAssignmentAB.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
